@@ -684,16 +684,29 @@
     function setup(active){
       for (var i = 0; i < active.length; i++) {
         $(active[i].id).text(active[i].value);
-        // alert(active[i].id);
+        //  alert(active[i].id);
       }
     }
     $(document).ready(function(){
-      var active = [
-        {id:"#light",value:"4"},
-        {id:"#appliances",value:"4"},
-        {id:"#waterLevel",value:"4"},
-      ];
-      setup(active);
+      var active = [];
+      $.getJSON("home_data.php",function(data){
+        // alert(data);
+        // alert(data.lights.length);
+        // alert(data.appliances.length);
+        // alert(data.water.level);
+        active.push({id:"#light",value:data.lights.length});
+        // alert(active[0].id);alert(active[0].value);
+        active.push({id:"#appliances",value:data.appliances.length});
+        // alert(active[1].id);alert(active[1].value);
+        active.push({id:"#waterLevel",value:data.water.level});
+        // alert(active[2].id);alert(active[2].value);
+        setup(active);
+      });
+      // var active = [
+      //   {id:"#light",value:"4"},
+      //   {id:"#appliances",value:"4"},
+      //   {id:"#waterLevel",value:"4"},
+      // ];
     })
     </script>
 

@@ -1,0 +1,31 @@
+{
+    "water": {
+        "state": 1,
+        "level": 20
+    },
+    "lights": [
+        {
+            "loc": "room1",
+            "state": "0",
+            "id": 1
+        },
+        {
+            "loc": "room2",
+            "state": 1,
+            "id": 2
+        }
+    ],
+    "alarm": {
+        "state": 1
+    },
+    "mood": "movie",
+    "appliances": [
+        {
+            "loc": "room",
+            "state": 1,
+            "id": 1
+        }
+    ],
+    "gate":0,
+    "temp":[25,32]
+}

@@ -471,13 +471,20 @@
     <script src="../dist/js/sb-admin-2.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
-      active = "#movie";
-      $(active).toggleClass("panel-green");
+      var active = [];
+      $.getJSON("home_data.php",function(data){
+        active = "#" + data.mood;
+        $(active).toggleClass("panel-green");
+      });
       $(".panel").click(function(){
         if(!$(this).hasClass("panel-green")){
           $(active).toggleClass("panel-green");
           active = "#" + $(this).attr("id");
           $(active).toggleClass("panel-green");
+          var mood = $(this).attr("id");
+          $.post("change-settings.php",{item:"mood",state:mood}).done(function(data){
+            alert(data);
+          });
         }
       });
     })

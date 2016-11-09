@@ -372,79 +372,6 @@
             </div>
             <!-- /.row -->
             <div class="row" id="lightPanel">
-                <!-- <div class="col-lg-3 col-md-6">
-                    <a href="#"><div class="panel " id="default">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-5 col-md-offset-3">
-                                    <span class="glyphicon glyphicon-home fa-5x"></span>
-                                    <div class="text-center">Default</div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div></a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <a href="#"><div class="panel" id="movie">
-                        <div class="panel-heading">
-                          <div class="row">
-                              <div class="col-xs-5 col-md-offset-3">
-                                  <span class="glyphicon glyphicon-film fa-5x"></span>
-                                  <div class="text-center">Movie</div>
-                              </div>
-                          </div>
-                        </div>
-                    </div></a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <a href="#"><div class="panel " id="romantic">
-                        <div class="panel-heading">
-                          <div class="row">
-                              <div class="col-xs-5 col-md-offset-3">
-                                  <span class="glyphicon glyphicon-heart fa-5x"></span>
-                                  <div class="text-center">Romantic</div>
-                              </div>
-                          </div>
-                        </div>
-                    </div></a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <a href="#"><div class="panel" id="study">
-                        <div class="panel-heading">
-                          <div class="row">
-                              <div class="col-xs-5 col-md-offset-3">
-                                  <span class="glyphicon glyphicon-pencil fa-5x"></span>
-                                  <div class="text-center">Study</div>
-                              </div>
-                          </div>
-                        </div>
-                    </div></a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <a href="#"><div class="panel" id="eco">
-                        <div class="panel-heading">
-                          <div class="row">
-                              <div class="col-xs-5 col-md-offset-3">
-                                  <span class="glyphicon glyphicon-leaf fa-5x"></span>
-                                  <div class="text-center">Eco</div>
-                              </div>
-                          </div>
-                        </div>
-                    </div></a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <a href="#"><div class="panel" id="sleep">
-                        <div class="panel-heading">
-                          <div class="row">
-                              <div class="col-xs-5 col-md-offset-3">
-                                  <i class="fa fa-moon-o fa-5x"></i>
-                                  <div class="text-center">Sleep</div>
-                              </div>
-                          </div>
-                        </div>
-                    </div></a>
-                </div> -->
             </div>
 
         </div>
@@ -474,7 +401,7 @@
       var result = '';
       for (var i = 0; i < data.length; i++) {
         result += '<div class="col-lg-3 col-md-6">'+
-        '<a href="#"><div class="panel" id="'+data[i].id+i+'">'+
+        '<a href="#"><div class="panel" id="'+data[i].id+'">'+
         '<div class="panel-heading">'+
         '<div class="row">'+'<div class="col-xs-5 col-md-offset-3">'+
         '<i class="fa fa-lightbulb-o fa-5x"></i>'+
@@ -485,18 +412,43 @@
       $("#lightPanel").append(result);
     }
     $(document).ready(function(){
-      active = "#movie";
-      //alert("hello");
-      var data=[
-        {id:"light",loc:"Bed room"},
-        {id:"light",loc:"Study room"},
-        {id:"light",loc:"Kitchen"},
-      ];
-      populate(data);
-      $(active).toggleClass("panel-yellow");
-      $(".panel").click(function(){
-        $(this).toggleClass("panel-yellow");
+      var active = [];
+      $.getJSON("home_data.php",function(data){
+        // alert(data);
+        // alert(data.lights.length);
+        // alert(data.appliances.length);
+        // alert(data.water.level);
+        for (var i = 0; i < data.lights.length; i++) {
+          active.push({id:"light-"+data.lights[i].id, loc:data.lights[i].loc});
+        }
+        populate(active);
+        for (var i = 0; i < data.lights.length; i++) {
+          if (data.lights[i].state==1) {
+            // alert("#light-"+data.lights[i].id)
+            // var str = "#light-"+data.lights[i].id;
+            $("#light-"+data.lights[i].id).toggleClass("panel-yellow");
+          }
+        }
+        $(".panel").click(function(){
+          var light_id = $(this).attr("id");
+          light_id = light_id.replace("light-",'');
+          var action=1;
+          if ($(this).hasClass("panel-yellow")){
+            action=0;
+          }
+          $.post("change-settings.php",{item:"light",id:light_id,state:action}).done(function(data){
+            alert(data);
+          });
+          $(this).toggleClass("panel-yellow");
+        });
       });
+      //alert("hello");
+      // var data=[
+      //   {id:"light",loc:"Bed room"},
+      //   {id:"light",loc:"Study room"},
+      //   {id:"light",loc:"Kitchen"},
+      // ];
+      //$(active).toggleClass("panel-yellow");
     })
     </script>
 
