@@ -409,19 +409,29 @@
     $(document).ready(function(){
         $.getJSON("home_data.php",function(data){
           var buttonName = "Turn on";
+          var value = 0;
           if (data.water.state == 1) {
             buttonName = "Turn off";
+            value = 1;
           }
           var widthcss = "width:"+(data.water.level*10)+"%";
           $("#waterLevel").attr("style",widthcss);
           $("#toggleButton").append(buttonName);
+          $("#toggleButton").attr('value',value);
         });
-        //alert("out of function");
-        // $("#toggleButton").click(function(){
-        //   $.post("change-settings.php",{item:"appliance",id:applianceID,state:action,value:threshold}).done(function(data){
-        //     //alert(data);
-        //   });
-        // });
+        // alert("out of function");
+        $("#toggleButton").click(function(){
+          var nextState = $(this).attr('value');
+          $.post("change-settings.php",{item:"water",state:nextState}).done(function(data){
+          });
+          if (nextState == 0) {
+            nextState = 1;
+          }
+          else {
+            nextState = 0;
+          }
+          $("#toggleButton").attr('value',nextState);
+        });
       });
     </script>
 

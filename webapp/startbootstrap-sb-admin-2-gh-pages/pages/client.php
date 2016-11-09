@@ -11,7 +11,7 @@ if(!($sock = socket_create(AF_INET, SOCK_STREAM, 0)))
 // echo "Socket created \n";
 
 //Connect socket to remote server
-if(!socket_connect($sock , '127.0.0.1' , 5000))
+if(!socket_connect($sock , '127.0.0.1' , 7000))
 {
     $errorcode = socket_last_error();
     $errormsg = socket_strerror($errorcode);

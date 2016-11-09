@@ -28,10 +28,33 @@ class comArduino(threading.Thread):
     def run(self):
         if self.operation == 0:
             count = 0
-            loop = 20
+            loop = 2000
             l=1
+            timePassed = 0
+            power = 0
+            jsonData = getJSON()
+            # for i in range(len(jsonData['power'])):
+            #     jsonData['power'][i] = 0
+            # putJSON(jsonData)
             while count < loop:
                 self.strData = makeResponse()
+                if timePassed == 5:
+                    timePassed = 0
+                    power = 0
+                timePassed = timePassed + 1
+                power += int(self.strData[2]-48)*1000
+                power += int(self.strData[3]-48)*40/6.0
+                power += int(self.strData[4]-48)*40/6.0
+                power += int(self.strData[5]-48)*40/6.0
+                power += int(self.strData[6]-48)*40/6.0
+                power += int(self.strData[7]-48)*40/6.0
+                power += int(self.strData[8]-48)*40/6.0
+                power += int(self.strData[9]-48)*100/9.0
+                power += int(self.strData[10]-48)*100/9.0
+                jsonData = getJSON()
+                if count <0:
+                    jsonData['power'][count/5] = power
+                    putJSON(jsonData)
                 readData(self.serPort,self.strData)
                 count = count + 1
                 time.sleep(1)
@@ -65,6 +88,7 @@ def readData(conn,fixedStr):
     jsonData['temp'][0] = ord(resp[2])
     jsonData['temp'][1] = ord(resp[3])
     putJSON(jsonData)
+
     print 'current states are',ord(resp[0]),ord(resp[1]),ord(resp[2]),ord(resp[3])
     portLock.release()
 
@@ -77,11 +101,11 @@ def waterControl(pumpState,level):
     return str(signal)
 
 def tempControl(tempValue,threshold):
-    kp = .2
-    signal = kp*(int(tempValue) - int(threshold))
+    kp = 1
+    signal = (int(tempValue) - int(threshold))/10
+    print "setting temp bit",signal
     if signal<0:
         signal = 0
-    # print "setting temp bit",signal
     return str(signal)
 
 
@@ -101,7 +125,7 @@ def makeResponse():
 
 
 filename = "home_states.json"
-serialPort = serial.Serial('/dev/ttyACM1',115200,timeout = 1)
+serialPort = serial.Serial('/dev/ttyACM2',115200,timeout = 1)
 
 portLock = threading.Lock()
 fileLock = threading.Lock()
@@ -114,7 +138,7 @@ writeThread = comArduino(2,serialPort,1)
 
 sock = socket.socket()         # Create a socket object
 host = socket.gethostname() # Get local machine name
-port = 5000                # Reserve a port for your service.
+port = 7000                # Reserve a port for your service.
 print "Server starting...."
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 sock.bind(("127.0.0.1", port))        # Bind to the port

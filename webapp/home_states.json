@@ -1,68 +1,78 @@
 {
-    "mood": "sleep", 
+    "mood": "default",
     "temp": [
-        13, 
-        78
-    ], 
-    "lock": 1, 
+        56,
+        50
+    ],
+    "lock": 1,
     "alarm": {
         "state": 1
-    }, 
+    },
     "water": {
-        "state": 1, 
-        "level": 28
-    }, 
+        "state": 1,
+        "level": 59
+    },
     "lights": [
         {
-            "loc": "room1", 
-            "state": "0", 
-            "id": 1, 
-            "value": "1"
-        }, 
+            "loc": "room1",
+            "state": "1",
+            "id": 1,
+            "value": "4"
+        },
         {
-            "loc": "room2", 
-            "state": "1", 
-            "id": 2, 
-            "value": "1"
-        }, 
+            "loc": "room2",
+            "state": "0",
+            "id": 2,
+            "value": "4"
+        },
         {
-            "loc": "room1", 
-            "state": "1", 
-            "id": 3, 
-            "value": "1"
-        }, 
+            "loc": "room1",
+            "state": "1",
+            "id": 3,
+            "value": "4"
+        },
         {
-            "loc": "room2", 
-            "state": "1", 
-            "id": 4, 
-            "value": "1"
-        }, 
+            "loc": "room2",
+            "state": "0",
+            "id": 4,
+            "value": "4"
+        },
         {
-            "loc": "room1", 
-            "state": "1", 
-            "id": 5, 
-            "value": "1"
-        }, 
+            "loc": "room1",
+            "state": "1",
+            "id": 5,
+            "value": "4"
+        },
         {
-            "loc": "room2", 
-            "state": "1", 
-            "id": 6, 
-            "value": "1"
+            "loc": "room2",
+            "state": "0",
+            "id": 6,
+            "value": "4"
         }
-    ], 
+    ],
+    "power": [
+        5000,
+        4500,
+        500,
+        5500,
+        4300,
+        6547,
+        2365,
+        753.3
+    ],
     "appliances": [
         {
-            "loc": "room1", 
-            "state": "0", 
-            "id": 1, 
-            "value": "40"
-        }, 
+            "loc": "room1",
+            "state": "1",
+            "id": 1,
+            "value": "15"
+        },
         {
-            "loc": "room2", 
-            "state": "0", 
-            "id": 2, 
-            "value": "31"
+            "loc": "room2",
+            "state": "1",
+            "id": 2,
+            "value": "15"
         }
-    ], 
-    "gate": 0
+    ],
+    "gate": 1
 }
