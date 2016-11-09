@@ -1,31 +1,68 @@
 {
-    "water": {
-        "state": 1,
-        "level": 20
-    },
-    "lights": [
-        {
-            "loc": "room1",
-            "state": "0",
-            "id": 1
-        },
-        {
-            "loc": "room2",
-            "state": 1,
-            "id": 2
-        }
-    ],
+    "mood": "sleep", 
+    "temp": [
+        13, 
+        78
+    ], 
+    "lock": 1, 
     "alarm": {
         "state": 1
-    },
-    "mood": "movie",
+    }, 
+    "water": {
+        "state": 1, 
+        "level": 28
+    }, 
+    "lights": [
+        {
+            "loc": "room1", 
+            "state": "0", 
+            "id": 1, 
+            "value": "1"
+        }, 
+        {
+            "loc": "room2", 
+            "state": "1", 
+            "id": 2, 
+            "value": "1"
+        }, 
+        {
+            "loc": "room1", 
+            "state": "1", 
+            "id": 3, 
+            "value": "1"
+        }, 
+        {
+            "loc": "room2", 
+            "state": "1", 
+            "id": 4, 
+            "value": "1"
+        }, 
+        {
+            "loc": "room1", 
+            "state": "1", 
+            "id": 5, 
+            "value": "1"
+        }, 
+        {
+            "loc": "room2", 
+            "state": "1", 
+            "id": 6, 
+            "value": "1"
+        }
+    ], 
     "appliances": [
         {
-            "loc": "room",
-            "state": 1,
-            "id": 1
+            "loc": "room1", 
+            "state": "0", 
+            "id": 1, 
+            "value": "40"
+        }, 
+        {
+            "loc": "room2", 
+            "state": "0", 
+            "id": 2, 
+            "value": "31"
         }
-    ],
-    "gate":0,
-    "temp":[25,32]
+    ], 
+    "gate": 0
 }

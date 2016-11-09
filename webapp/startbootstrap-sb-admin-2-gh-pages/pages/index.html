@@ -291,27 +291,7 @@
                             <a href="appliance.html"><i class="fa fa-desktop fa-fw"></i> Appliances</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="panels-wells.html">Panels and Wells</a>
-                                </li>
-                                <li>
-                                    <a href="buttons.html">Buttons</a>
-                                </li>
-                                <li>
-                                    <a href="notifications.html">Notifications</a>
-                                </li>
-                                <li>
-                                    <a href="typography.html">Typography</a>
-                                </li>
-                                <li>
-                                    <a href="icons.html"> Icons</a>
-                                </li>
-                                <li>
-                                    <a href="grid.html">Grid</a>
-                                </li>
-                            </ul>
+                            <a href="water-level.html"><i class="fa fa-wrench fa-fw"></i> Water Level</span></a>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
@@ -694,9 +674,21 @@
         // alert(data.lights.length);
         // alert(data.appliances.length);
         // alert(data.water.level);
-        active.push({id:"#light",value:data.lights.length});
+        var activeLight = 0;
+        var activeAppliances = 0;
+        for (var i = 0; i < data.lights.length; i++) {
+          if (data.lights[i].state==1) {
+            activeLight++;
+          }
+        }
+        for (var i = 0; i < data.appliances.length; i++) {
+          if (data.appliances[i].state==1) {
+            activeAppliances++;
+          }
+        }
+        active.push({id:"#light",value:activeLight});
         // alert(active[0].id);alert(active[0].value);
-        active.push({id:"#appliances",value:data.appliances.length});
+        active.push({id:"#appliances",value:activeAppliances});
         // alert(active[1].id);alert(active[1].value);
         active.push({id:"#waterLevel",value:data.water.level});
         // alert(active[2].id);alert(active[2].value);

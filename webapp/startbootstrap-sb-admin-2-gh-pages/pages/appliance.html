@@ -346,85 +346,17 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Moods!</h1>
+                    <h1 class="page-header">Appliances</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <a href="#"><div class="panel " id="default">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-5 col-md-offset-3">
-                                    <span class="glyphicon glyphicon-home fa-5x"></span>
-                                    <div class="text-center">Default</div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div></a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <a href="#"><div class="panel" id="movie">
-                        <div class="panel-heading">
-                          <div class="row">
-                              <div class="col-xs-5 col-md-offset-3">
-                                  <span class="glyphicon glyphicon-film fa-5x"></span>
-                                  <div class="text-center">Movie</div>
-                              </div>
-                          </div>
-                        </div>
-                    </div></a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <a href="#"><div class="panel " id="romantic">
-                        <div class="panel-heading">
-                          <div class="row">
-                              <div class="col-xs-5 col-md-offset-3">
-                                  <span class="glyphicon glyphicon-heart fa-5x"></span>
-                                  <div class="text-center">Romantic</div>
-                              </div>
-                          </div>
-                        </div>
-                    </div></a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <a href="#"><div class="panel" id="study">
-                        <div class="panel-heading">
-                          <div class="row">
-                              <div class="col-xs-5 col-md-offset-3">
-                                  <span class="glyphicon glyphicon-pencil fa-5x"></span>
-                                  <div class="text-center">Study</div>
-                              </div>
-                          </div>
-                        </div>
-                    </div></a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <a href="#"><div class="panel" id="eco">
-                        <div class="panel-heading">
-                          <div class="row">
-                              <div class="col-xs-5 col-md-offset-3">
-                                  <span class="glyphicon glyphicon-leaf fa-5x"></span>
-                                  <div class="text-center">Eco</div>
-                              </div>
-                          </div>
-                        </div>
-                    </div></a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <a href="#"><div class="panel" id="sleep">
-                        <div class="panel-heading">
-                          <div class="row">
-                              <div class="col-xs-5 col-md-offset-3">
-                                  <i class="fa fa-moon-o fa-5x"></i>
-                                  <div class="text-center">Sleep</div>
-                              </div>
-                          </div>
-                        </div>
-                    </div></a>
-                </div>
+            <div class="row" id="appliancePanel">
+            </div>
+            <div class="row" id="setThreshold">
+              <div class="col-lg-3">
+                <input type="text" class="form-group" id="temperatureVal">
+              </div>
             </div>
 
         </div>
@@ -450,24 +382,59 @@
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
     <script type="text/javascript">
+    function populate(data){
+      var result = '';
+      for (var i = 0; i < data.length; i++) {
+        result += '<div class="col-lg-3 col-md-6">'+
+        '<a href="#"><div class="panel" id="'+data[i].id+'" data-temp="'+data[i].temperature+'">'+
+        '<div class="panel-heading">'+
+        '<div class="row">'+'<div class="col-xs-5 col-md-offset-3">'+
+        '<i class="fa fa-desktop fa-5x"></i>'+
+        '<div class="">'+data[i].loc+'</div>'+
+        '</div></div></div></div></a></div>';
+      }
+      // alert(result);
+      $("#appliancePanel").append(result);
+    }
     $(document).ready(function(){
       var active = [];
       $.getJSON("home_data.php",function(data){
-        active = "#" + data.mood;
-        $(active).toggleClass("panel-green");
-      });
-      $(".panel").click(function(){
-        if(!$(this).hasClass("panel-green")){
-          $(active).toggleClass("panel-green");
-          active = "#" + $(this).attr("id");
-          $(active).toggleClass("panel-green");
-          var mood = $(this).attr("id");
-          $.post("change-settings.php",{item:"mood",state:mood}).done(function(data){
-            // alert(data);
-          });
+        // alert(data);
+        // alert(data.lights.length);
+        // alert(data.appliances.length);
+        // alert(data.water.level);
+        for (var i = 0; i < data.appliances.length; i++) {
+          active.push({id:"appliance-"+data.appliances[i].id, loc:data.appliances[i].loc, temperature:data.appliances[i].value});
         }
+        populate(active);
+        for (var i = 0; i < data.appliances.length; i++) {
+          if (data.appliances[i].state==1) {
+            // alert("#appliance-"+data.appliances[i].id);
+            // var str = "#light-"+data.lights[i].id;
+            $("#appliance-"+data.appliances[i].id).toggleClass("panel-green");
+          }
+        }
+        //alert("out of function");
+        $(".panel").click(function(){
+          var applianceID = $(this).attr("id");
+          // alert(applianceID);
+          applianceID = applianceID.replace("appliance-",'');
+          var action=1;
+          if ($(this).hasClass("panel-green")){
+            action=0;
+          }
+          var threshold = -1;
+          var tempVal = $("#temperatureVal").val();
+          if (!isNaN(parseInt(tempVal,10))) {
+            threshold = tempVal;
+          }
+          $.post("change-settings.php",{item:"appliance",id:applianceID,state:action,value:threshold}).done(function(data){
+            //alert(data);
+          });
+          $(this).toggleClass("panel-green");
+        });
       });
-    })
+    });
     </script>
 
 </body>

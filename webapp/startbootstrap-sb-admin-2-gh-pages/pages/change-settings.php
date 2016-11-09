@@ -10,6 +10,9 @@ if (isset($_POST["id"])) {
 if (isset($_POST["state"])) {
   $message .= "state: ".$_POST["state"]."\n";
 }
+if (isset($_POST["value"])) {
+  $message .= "value: ".$_POST["value"]."\n";
+}
 // echo $message;
 //Send the message to the server
 if( ! socket_send ( $sock , $message , strlen($message) , 0))
